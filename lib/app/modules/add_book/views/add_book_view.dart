@@ -57,7 +57,7 @@ class AddBookView extends GetView<AddBookController> {
               },
             ),
             TextFormField(
-              controller: controller.tahunterbitController,
+              controller: controller.tahunController,
               //
               decoration: InputDecoration(
                 hintText: "Masukkan tahunterbit",

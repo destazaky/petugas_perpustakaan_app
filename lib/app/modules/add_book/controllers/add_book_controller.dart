@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:petugas_perpustakaan_app/app/data/constant/endpoint.dart';
 import 'package:petugas_perpustakaan_app/app/data/provider/api_provider.dart';
+import 'package:petugas_perpustakaan_app/app/modules/book/controllers/book_controller.dart';
 
 
 
@@ -13,7 +14,8 @@ class AddBookController extends GetxController {
   final TextEditingController judulController = TextEditingController();
   final TextEditingController penulisController = TextEditingController();
   final TextEditingController penerbitController = TextEditingController();
-  final TextEditingController tahunterbitController = TextEditingController();
+  final TextEditingController tahunController = TextEditingController();
+  final BookController _bookController= Get.find();
 
   final count = 0.obs;
   @override
@@ -40,16 +42,17 @@ class AddBookController extends GetxController {
       FocusScope.of(Get.context!).unfocus();
       formKey.currentState?.save();
       if (formKey.currentState!.validate()) {
-        final response = await ApiProvider.instance().post(Endpoint.login,
+        final response = await ApiProvider.instance().post(Endpoint.book,
             data:
             {
-              "judul": judulController.toString(),
-              "penulis": penulisController.toString(),
-              "penerbit": penerbitController.toString(),
-              "tahun_terbit":int.parse (tahunterbitController.toString()),
+              "judul": judulController.text.toString(),
+              "penulis": penulisController.text.toString(),
+              "penerbit": penerbitController.text.toString(),
+              "tahun_terbit":int.parse (tahunController.text.toString()),
             }
         );
         if (response.statusCode == 201) {
+          _bookController.getData();
           Get.back();
         } else {
           Get.snackbar("Sorry", "Login Gagal", backgroundColor: Colors.orange);
